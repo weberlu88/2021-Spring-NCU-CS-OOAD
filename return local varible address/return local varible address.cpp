@@ -16,7 +16,7 @@ Car* foo() {
     mazda.brand = "mazda";
     cout << "&mazda: " << &mazda << endl;
     return &mazda;
-}
+} // 離開fucntion後，執行Car的解構子，mazda.brand被清空。若改用new來建立mazda則不會觸發解構子。
 
 int main()
 {
