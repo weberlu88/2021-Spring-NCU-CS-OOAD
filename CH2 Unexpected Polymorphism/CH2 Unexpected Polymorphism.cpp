@@ -8,6 +8,7 @@ class pet {
 public:
     pet() { cout << "pet constructor" << endl; }
     ~pet() { cout << "pet destructor" << endl; }
+    pet(pet& rhs) { cout << "copy pet" << endl; }
     void speak() { cout << "Growl " << endl; }
 };
 
@@ -15,19 +16,27 @@ class cat : public pet {
 public:
     cat() { cout << "cat constructor" << endl; }
     ~cat() { cout << "cat destructor" << endl; }
+    cat(cat& rhs) { cout << "copy cat" << endl; }
     void speak() { cout << "meow" << endl; }
 };
 
 int main()
 {
     // pet insect;
-    // cat pussy;
-    pet* nose = (pet*) new cat();
+    cat pussy;
+    // pet* nose = new cat(); //  (pet*) new cat(); 可有可無, 是 new 出來的不會在main中destruct喔!!
     // insect.speak(); // Growl
-    // pussy.speak(); // meow
-    // ((pet)pussy).speak(); // Growl
-    nose->speak(); // Growl
+    pussy.speak(); // meow
+    ((pet)pussy).speak(); // Growl 轉型時呼叫copy constructor拷貝出新的pet物件，pet新物件再執行speak()，該行執行完畢被destruct
+    // nose->speak(); // Growl
+    // ((cat*)nose)->speak(); // meow 用指標就不會呼叫copy constructor
 }
+
+/*
+int a;
+a = 100;
+char c = (char) a; // c 跟 a 是不同物件喔，copy a 給 c
+*/
 
 // 執行程式: Ctrl + F5 或 [偵錯] > [啟動但不偵錯] 功能表
 // 偵錯程式: F5 或 [偵錯] > [啟動偵錯] 功能表
