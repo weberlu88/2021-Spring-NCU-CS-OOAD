@@ -36,18 +36,20 @@ public class UMLediter extends JFrame {
 		pane.add(menubar, BorderLayout.NORTH);
 		
 		//Build buttons
-		JPanel btnPane = new JPanel();
-		btnPane.setLayout(new BoxLayout(btnPane, BoxLayout.PAGE_AXIS));
-		JButton[] btnList = new JButton[6];
-		
-		for (int i = 0; i < btnList.length; i++) {
-			btnList[i] = new JButton("Button"+ i);
-			btnList[i].setPreferredSize(new Dimension(80, 100));
-			btnPane.add(btnList[i]);
-		}
-		btnPane.setOpaque(true);
-		btnPane.setBackground(Color.green);
-		pane.add(btnPane, BorderLayout.WEST);
+//		JPanel btnPane = new JPanel();
+//		btnPane.setLayout(new BoxLayout(btnPane, BoxLayout.PAGE_AXIS));
+//		JButton[] btnList = new JButton[6];
+//		
+//		for (int i = 0; i < btnList.length; i++) {
+//			btnList[i] = new JButton("Button"+ i);
+//			btnList[i].setPreferredSize(new Dimension(80, 100));
+//			btnPane.add(btnList[i]);
+//		}
+//		btnPane.setOpaque(true);
+//		btnPane.setBackground(Color.green);
+//		pane.add(btnPane, BorderLayout.WEST);
+		toolbar = new ToolBar();
+		pane.add(toolbar, BorderLayout.WEST);
 		
 		//Build layered panel
 		canvas = new Canvas();
