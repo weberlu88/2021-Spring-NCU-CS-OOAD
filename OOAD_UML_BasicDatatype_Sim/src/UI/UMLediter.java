@@ -56,6 +56,7 @@ public class UMLediter extends JFrame {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		System.out.print("Is git control ok?");
 		UMLediter mainWindow = new UMLediter();
 		mainWindow.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		mainWindow.setSize(1000, 600);
