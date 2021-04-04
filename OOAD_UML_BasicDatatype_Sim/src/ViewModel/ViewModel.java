@@ -34,6 +34,7 @@ public class ViewModel {
 	public Item addItem(String objectType, Point location, int depth) {
 		// create mode object
 		BasicObject newObj = factory.getObject(objectType, location);
+		newObj.setName(objectType);
 		items.add(newObj);
 		// create ui object, add its reference to map
 		Item item = new Item(newObj, location, objectType, depth);
@@ -112,5 +113,10 @@ public class ViewModel {
 
 	public void setSelected(BasicObject selected) {
 		this.selected = selected;
+	}
+
+	public void setSelectedName(String name) {
+		selected.setName(name);
+		mapItem(selected).setName(name);
 	}
 }

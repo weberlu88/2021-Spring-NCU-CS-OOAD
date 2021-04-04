@@ -14,7 +14,11 @@ public class BasicObject extends Shape {
 		super(location);
 	}
 	
-	public void changeName(String name) {
+	public String getName() {
+		return objectName;
+	}
+	
+	public void setName(String name) {
 		objectName = name;
 	}
 	

@@ -120,6 +120,10 @@ public class Item extends JLayeredPane implements IObserver {
 	public BasicObject getModelReference() {
 		return modelReference;
 	}
+	
+	public void setName(String name) {
+		text.setText(name);
+	}
 
 	public int getWidth() {
 		return width;
