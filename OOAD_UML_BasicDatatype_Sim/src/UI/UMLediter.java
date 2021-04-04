@@ -52,7 +52,7 @@ public class UMLediter extends JFrame {
 		pane.add(toolbar, BorderLayout.WEST);
 		
 		//Build layered panel
-		canvas = new Canvas();
+		canvas = Canvas.getInstance();
 		pane.add(canvas, BorderLayout.CENTER);
 	}
 
