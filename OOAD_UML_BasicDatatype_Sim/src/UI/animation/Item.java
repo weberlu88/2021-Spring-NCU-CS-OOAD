@@ -21,34 +21,26 @@ import ViewModel.ViewModel;
 
 @SuppressWarnings("serial")
 public class Item extends JLayeredPane implements IObserver {
-	public int id;
+//	public int id;
+	private int depth;
 	public Point location; // 左上角
 	public Point mousePosition; // 滑鼠按在canvas上的點，not 左上角
-	public int width, height;
+	private int width, height;
 	private EventListener listener = null;
-	public BasicObject modelReference; // 判斷是哪種物件和其reference
-	public JLabel label;
-	public JLabel text;
+	private BasicObject modelReference; // 判斷是哪種物件和其reference
+	private JLabel label;
+	private JLabel text;
 	
 //	public AnimationController animationController = AnimationController.getInstance();
 //	public ViewModel vm = ViewModel.getInstance();
 	
-	public Item(BasicObject modelReference, Point location, String text) {
-		// 用instanceof判斷
+	public Item(BasicObject modelReference, Point location, String text, int depth) {
+		// 用instanceof判斷哪種物件
 		this.modelReference = modelReference;
+		this.depth = depth;
 		this.location = location;
 		this.text = new JLabel(text, JLabel.CENTER);
-		ImageIcon icon;
-		if (modelReference instanceof ClassObject ) {
-			icon = new ImageIcon("resource/transparent/class.png");
-		} 
-		else if (modelReference instanceof UsecaseObject ) {
-			icon = new ImageIcon("resource/transparent/usecase.png");
-		}
-		else {
-			System.out.println("Item Constructor: type error");
-			return;
-		}
+		ImageIcon icon = getIcon(false);
 		label = new JLabel(icon);
 		
 		// add to Layered pane
@@ -85,10 +77,68 @@ public class Item extends JLayeredPane implements IObserver {
 		moveTo(location);
 	}
 
-	/** update location by translating location & reset bounds **/
+	/** Core method of moving: Update location by translating location & reset bounds.
+	 * Makes both changes at View & ViewModel. **/
 	@Override
 	public void update(int offsetX, int offsetY) {
-		move(offsetX, offsetY);
+		move(offsetX, offsetY); // move on View
+//		modelReference.move(offsetX, offsetY); // move in ViewModel
+	}
+	
+	private ImageIcon getIcon(boolean selected) {
+		ImageIcon icon = null;
+		if ( ! selected ) {
+			if (modelReference instanceof ClassObject ) 
+				icon = new ImageIcon("resource/transparent/class.png");
+			else if (modelReference instanceof UsecaseObject ) 
+				icon = new ImageIcon("resource/transparent/usecase.png");
+		}
+		else {
+			if (modelReference instanceof ClassObject ) 
+				icon = new ImageIcon("resource/transparent/class_selected.png");
+			else if (modelReference instanceof UsecaseObject ) 
+				icon = new ImageIcon("resource/transparent/usecase_selected.png");
+		}
+		if ( icon == null )
+			System.out.println("Item getIcon(): type error");
+		
+		return icon;
+	}
+	
+	/** change image if selected, displaying ports **/
+	public void displaySelected() {
+		ImageIcon icon = getIcon(true);
+		label.setIcon(icon);
+	}
+	/** change image if not selected, displaying original image **/
+	public void displayDeselected() {
+		ImageIcon icon = getIcon(false);
+		label.setIcon(icon);
+	}
+
+	/* ------------- Getter Setter --------------- */
+	public BasicObject getModelReference() {
+		return modelReference;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public int getDepth() {
+		return depth;
 	}
 	
 //	@Override

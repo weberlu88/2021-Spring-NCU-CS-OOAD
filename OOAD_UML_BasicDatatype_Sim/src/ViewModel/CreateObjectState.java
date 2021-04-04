@@ -16,7 +16,7 @@ public class CreateObjectState extends State {
 	public void mousePressed(MouseEvent e) {
 		// create data-component in ViewModel, return ui-component on View
 		int depth = canvas.getNextDepth();
-		Item item = vm.addItem(objectType, e.getPoint());
+		Item item = vm.addItem(objectType, e.getPoint(), depth);
 		canvas.add(item, depth);
 	}
 	

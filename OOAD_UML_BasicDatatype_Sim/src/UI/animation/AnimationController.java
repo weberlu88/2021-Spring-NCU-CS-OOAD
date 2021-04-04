@@ -1,12 +1,17 @@
 package UI.animation;
 
 import java.awt.Point;
+import java.util.ArrayList;
+
+import Model.BasicObject;
+import ViewModel.ViewModel;
 
 public class AnimationController {
 	
 	//create an object of Singleton 
 	private static AnimationController instance = new AnimationController();
-	public MovementSubject movementSubject = new MovementSubject();
+	private MovementSubject movementSubject = new MovementSubject();
+	private ViewModel vm = ViewModel.getInstance();
 	
 	//make the constructor private so that this class cannot be instantiated
 	private AnimationController() {}
@@ -18,9 +23,15 @@ public class AnimationController {
 	
 	/** get id of the member who's being dragged, observe all group members **/
 	public void addMoveObserversByGroup(Item item) {
+		// observe itself
+		movementSubject.addObserver(item); 
 		// observe all group members 
-		// ......
-		movementSubject.addObserver(item); // demo one object
+		ArrayList<Integer> groupIds = item.getModelReference().getGroupIds();
+		groupIds.forEach(id -> {
+			for( BasicObject mate: vm.getItemsByGroupId(id) )
+				// notes: movementSubject will deal with duplicates
+				movementSubject.addObserver( vm.mapItem(mate) ); 
+		});
 	}
 	
 	/** clear observer list **/

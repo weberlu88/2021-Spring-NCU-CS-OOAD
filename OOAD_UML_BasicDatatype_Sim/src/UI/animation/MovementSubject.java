@@ -9,7 +9,8 @@ public class MovementSubject {
 	private ArrayList<IObserver> observers = new ArrayList<IObserver>();
 
 	public void addObserver(IObserver observer) {
-		observers.add(observer);
+		if ( !observers.contains(observer))
+			observers.add(observer);
 	}
 	
 	public void removeObserver(IObserver observer) {

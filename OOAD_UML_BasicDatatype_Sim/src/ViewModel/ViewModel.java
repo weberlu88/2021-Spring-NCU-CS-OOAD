@@ -31,18 +31,22 @@ public class ViewModel {
 	 }
 	
 	/*------- items related methods --------*/
-	public Item addItem(String objectType, Point location) {
+	public Item addItem(String objectType, Point location, int depth) {
 		// create mode object
 		BasicObject newObj = factory.getObject(objectType, location);
 		items.add(newObj);
 		// create ui object, add its reference to map
-		Item item = new Item(newObj, location, objectType);
+		Item item = new Item(newObj, location, objectType, depth);
 		viewReferenceMap.put(newObj, item);
 		return item;
 	}
 	
 	public ArrayList<BasicObject> getAllItems() {
 		return items;
+	}
+	
+	public Item mapItem(BasicObject obj) {
+		return viewReferenceMap.get(obj);
 	}
 	
 	/** set new strategy pattern for every items(ui) **/
@@ -58,7 +62,7 @@ public class ViewModel {
 		});
 	}
 	
-	// group related methods
+	/*------- group related methods --------*/
 	public int getNextGroupId() {
 		return nextGroupId;
 	}
@@ -88,6 +92,20 @@ public class ViewModel {
 	}
 	
 	// selected item related methods
+	public void triggerSelect(Item item) {
+		removeSelect();
+		selected = item.getModelReference(); // record selected object in vm
+		item.displaySelected();
+	}
+	
+	public void removeSelect() {
+		// change previous selected item icon to original looking, BasicObject selected = null
+		if (selected != null) {
+			mapItem(selected).displayDeselected();
+			selected = null;
+		}
+	}
+	
 	public BasicObject getSelected() {
 		return selected;
 	}

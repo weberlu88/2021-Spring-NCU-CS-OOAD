@@ -5,6 +5,7 @@ import java.awt.event.MouseEvent;
 
 import UI.animation.Item;
 
+/** click on Item -> dispatchEvent to Canvas **/
 public class SelectItemState extends State {
 	
 	Item item;
@@ -13,7 +14,6 @@ public class SelectItemState extends State {
 	public void mousePressed(MouseEvent e) {
 		item = (Item) (e.getSource());
 		item.mousePosition = e.getComponent().getParent().getMousePosition();
-		
 		// pass event to parent
 //		System.out.println("[Press] item's location: " + item.location);
 		e.translatePoint((int)item.location.getX(), (int)item.location.getY()); // point on canvas
