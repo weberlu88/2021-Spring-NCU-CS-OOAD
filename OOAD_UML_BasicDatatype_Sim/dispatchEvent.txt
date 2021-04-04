@@ -1,0 +1,8 @@
+canvas mousePressed: java.awt.Point[x=373,y=193]
+canvas event: java.awt.event.MouseEvent[MOUSE_PRESSED,(373,193),absolute(724,360),button=1,modifiers=Button1,extModifiers=Button1,clickCount=1] 
+            on UI.Canvas[,76,25,910x538,alignmentX=0.0,alignmentY=0.0,border=,flags=0,maximumSize=,minimumSize=,preferredSize=java.awt.Dimension[width=800,height=600],optimizedDrawingPossible=true]
+
+click at java.awt.Point[x=373,y=193]
+canvas mousePressed: java.awt.Point[x=2,y=5] <- Item¤WªºÂI
+canvas event: java.awt.event.MouseEvent[MOUSE_PRESSED,(2,5),absolute(726,365),button=1,modifiers=Button1,extModifiers=Button1,clickCount=1] 
+            on UI.animation.Item[,373,193,101x101,alignmentX=0.0,alignmentY=0.0,border=,flags=0,maximumSize=,minimumSize=,preferredSize=java.awt.Dimension[width=101,height=101],optimizedDrawingPossible=true]
