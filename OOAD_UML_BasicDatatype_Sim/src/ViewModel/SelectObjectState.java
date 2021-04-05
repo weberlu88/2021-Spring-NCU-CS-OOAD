@@ -34,8 +34,10 @@ public class SelectObjectState extends State {
 		// Record areaStart, preparing to paint the selected area
 		else if (e.getSource() == canvas) {
 			vm.removeSelect();
+			vm.clearGroupSelect();
 			animationController.removeMoveObservers();
 			areaStart = e.getPoint();
+//			canvas.repaint();
 		}
 	}
 	
@@ -55,6 +57,9 @@ public class SelectObjectState extends State {
 			areaEnd = e.getPoint();
 			groupPainter.setSelectedArea(areaStart, areaEnd);
 			canvas.repaint();
+			
+			// perform grouping
+			vm.selectItemsInArea(groupPainter);
 		}
 	}
 	
@@ -71,6 +76,7 @@ public class SelectObjectState extends State {
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() == canvas) {
 			groupPainter.clearSelectedArea();
+			vm.clearGroupSelect();
 			canvas.repaint();
 		}
 	}

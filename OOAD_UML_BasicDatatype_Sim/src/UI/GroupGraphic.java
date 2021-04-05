@@ -29,14 +29,23 @@ public class GroupGraphic {
 		selectedY = (int) Math.min(start.getY(), end.getY());
 		selectedWidth = (int) Math.abs(start.getX() - end.getX());
 		selectedHeight = (int) Math.abs(start.getY() - end.getY());
-		System.out.println("[Area] start: " + start);
-		System.out.println("[Area] end: " + end);
-		System.out.println("[Area] x: " + selectedX + ", y: " + selectedY);
-		System.out.println("[Area] w: " + selectedWidth + ", h: " + selectedHeight);
+//		System.out.println("[Area] start: " + start);
+//		System.out.println("[Area] end: " + end);
+//		System.out.println("[Area] x: " + selectedX + ", y: " + selectedY);
+//		System.out.println("[Area] w: " + selectedWidth + ", h: " + selectedHeight);
 	}
 	
 	public void clearSelectedArea() {
 		selectedX = selectedY = selectedWidth = selectedHeight = 0;
+	}
+	
+	/** 判斷傳入物件是否完全包含在選取區內 **/
+	public boolean withinArea(Point location, int width, int height) {
+		if (location.getX() > selectedX && location.getY() > selectedY) // 位置
+			if (location.getX() + width < selectedX + selectedWidth) // 長
+				if (location.getY() + height < selectedY + selectedHeight) // 寬
+					return true;
+		return false;
 	}
 	
 	/** 跟著滑鼠繪製選取區 **/

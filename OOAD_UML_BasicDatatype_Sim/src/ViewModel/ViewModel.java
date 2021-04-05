@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import Model.BasicObject;
 import Model.ShapeFactory;
+import UI.GroupGraphic;
 import UI.animation.Item;
 
 public class ViewModel {
@@ -14,6 +15,7 @@ public class ViewModel {
 	private static ViewModel instance = new ViewModel();
 	/** 被選取的物件 reference **/
 	private BasicObject selected = null;
+	private ArrayList<Item> groupSelected = new ArrayList<Item>();
 	/** store all items in viewModel **/
 	private ArrayList<BasicObject> items = new ArrayList<BasicObject>();
 	private HashMap< BasicObject, Item > viewReferenceMap = new HashMap< BasicObject, Item >();
@@ -118,5 +120,22 @@ public class ViewModel {
 	public void setSelectedName(String name) {
 		selected.setName(name);
 		mapItem(selected).setName(name);
+	}
+
+	/** 多選物件: find items within area, then push them in selected list **/
+	public void selectItemsInArea(GroupGraphic groupPainter) {
+		// 遍歷 UI-items，若item在範圍內，加入至群組並將外觀改為selected
+		for (Item item : viewReferenceMap.values()) {
+			if (groupPainter.withinArea(item.location, item.getWidth(), item.getHeight()) )
+				if ( !groupSelected.contains(item) ) {
+					groupSelected.add(item);
+					item.displaySelected();
+				}
+		}
+	}
+	
+	public void clearGroupSelect() {
+		groupSelected.forEach(item -> { item.displayDeselected(); }); 
+		groupSelected.clear();
 	}
 }
