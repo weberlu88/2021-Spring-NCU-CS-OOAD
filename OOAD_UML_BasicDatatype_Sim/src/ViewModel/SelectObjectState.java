@@ -1,42 +1,60 @@
 package ViewModel;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 
+import UI.GroupGraphic;
 import UI.animation.AnimationController;
 import UI.animation.Item;
 
 /** click on Item -> dispatchEvent to Canvas **/
 public class SelectObjectState extends State {
 	
+	public Point areaStart = null; // record selected area's location
+	public Point areaEnd = null;
+	GroupGraphic groupPainter = GroupGraphic.getInstance();
+	/** observer pattern: perform group movement **/
 	public AnimationController animationController = AnimationController.getInstance();
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// Select: if click on UI Item
-		// only accept events emit from Item components (child)
 		System.out.println("[Press] selected source: "+e.getSource()+", on: "+e.getPoint());
 //		System.out.println( ((Item)e.getSource()).getModelReference().location );
-		if (e.getSource() != canvas) {
+		// Select: if click on UI Item
+		// only accept events emit from Item components (child)
+		if (e.getSource() instanceof Item) {
 			// mark as Selected in ViewModel
 			vm.triggerSelect((Item) e.getSource());
 			// show its group mates
 			animationController.addMoveObserversByGroup((Item) e.getSource());
 		}
 		// De-select: if click on canvas
-		else {
+		// Record areaStart, preparing to paint the selected area
+		else if (e.getSource() == canvas) {
 			vm.removeSelect();
 			animationController.removeMoveObservers();
+			areaStart = e.getPoint();
 		}
 	}
 	
 	@Override
 	public void mouseDragged(MouseEvent e) {
 //		System.out.println("[Drag] selected source: "+e.getSource());
-		if (e.getSource() != canvas) {
+		if (e.getSource() instanceof Item) {
 			// moving -> move Item alone with its group mates (X, Y is offset)
 			animationController.moveByGroup( e.getX(), e.getY() );
 			
 			// change its & group mates' location on in ViewModel
+			// I edit update() method, but UI movies 2x faster..... WTF
+			// and vm's location changes itself...
+		}
+		else if (e.getSource() == canvas) {
+			// display selected area
+			areaEnd = e.getPoint();
+			groupPainter.setSelectedArea(areaStart, areaEnd);
+			canvas.repaint();
 		}
 	}
 	
@@ -48,4 +66,13 @@ public class SelectObjectState extends State {
 //			System.out.println("[Release] inside selected: ");
 			animationController.removeMoveObservers();
 	}
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		if (e.getSource() == canvas) {
+			groupPainter.clearSelectedArea();
+			canvas.repaint();
+		}
+	}
+	
 }

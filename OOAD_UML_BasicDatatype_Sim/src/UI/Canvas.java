@@ -3,8 +3,10 @@ package UI;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
 import java.awt.MouseInfo;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -26,7 +28,8 @@ public class Canvas extends JLayeredPane {
 	int counter = 0; // delete it
 	private static Canvas instance = null;
 	private EventListener listener = null;
-	private int nextDepth = Integer.MAX_VALUE;
+	GroupGraphic groupPainter = GroupGraphic.getInstance();
+	private int nextDepth = Integer.MAX_VALUE; 
 
 	/** Build canvas with layered panel **/
 	private Canvas() {
@@ -46,6 +49,14 @@ public class Canvas extends JLayeredPane {
 		}
 		return instance;
 	}
+	
+	@Override
+	public void paint(Graphics g) {
+        super.paint(g);
+        // draw the selected area & selected item's groups
+        groupPainter.drawSelectedArea(g);
+        groupPainter.drawSelectedGroups(g);
+    }
 	
 	/** In Strategy pattern, the canvas's listener/algorithm can be changed at run time 
 	 * by passing various strategies interface 
