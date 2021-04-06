@@ -94,7 +94,7 @@ public class ViewModel {
 		return null;
 	}
 	
-	// selected item related methods
+	/*------- selected item related methods --------*/
 	public void triggerSelect(Item item) {
 		removeSelect();
 		selected = item.getModelReference(); // record selected object in vm
@@ -137,5 +137,9 @@ public class ViewModel {
 	public void clearGroupSelect() {
 		groupSelected.forEach(item -> { item.displayDeselected(); }); 
 		groupSelected.clear();
+	}
+
+	public ArrayList<Item> getGroupSelected() {
+		return groupSelected;
 	}
 }

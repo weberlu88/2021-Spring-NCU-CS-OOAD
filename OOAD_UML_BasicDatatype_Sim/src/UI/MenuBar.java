@@ -2,12 +2,16 @@ package UI;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+import Model.BasicObject;
+import UI.animation.Item;
 import ViewModel.ViewModel;
 
 @SuppressWarnings("serial")
@@ -57,6 +61,11 @@ public class MenuBar extends JMenuBar {
 		    	break;
 		    	
 		    case GROUP:
+		    	int nextGroupId = performGroup();
+		    	if (nextGroupId >= 1) 
+					System.out.println("[Group] New groupId is: " + nextGroupId);
+				else
+					System.out.println("[Group] No item to group.");
 		    	break;
 		    	
 		    case UNGROUP:
@@ -74,6 +83,17 @@ public class MenuBar extends JMenuBar {
 		if (s != null && !s.isEmpty() && !s.equals(name)  )
 			return s;
 		return null;
+	}
+	
+	/** Group the selected item, call function provide by ViewModel **/
+	private int performGroup() {
+		// get selected items from vm
+		ArrayList<Item> items = vm.getGroupSelected();
+		ArrayList<BasicObject> objects = items.stream()
+																	 .map(i -> i.getModelReference())
+																	 .collect(Collectors.toCollection(ArrayList::new));
+		int success = vm.addGroup(objects);
+		return success;
 	}
 
 }

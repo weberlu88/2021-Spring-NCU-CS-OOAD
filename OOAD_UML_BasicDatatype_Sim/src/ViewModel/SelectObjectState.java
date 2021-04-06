@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import UI.GroupGraphic;
 import UI.animation.AnimationController;
@@ -26,8 +28,11 @@ public class SelectObjectState extends State {
 		// only accept events emit from Item components (child)
 		if (e.getSource() instanceof Item) {
 			// mark as Selected in ViewModel
-			vm.triggerSelect((Item) e.getSource());
-			// show its group mates
+			Item selected = (Item) e.getSource();
+			vm.triggerSelect(selected);
+			// show its group mates by display 群組框框 (via GroupGraphic)
+			setGroupAreas(selected);
+			// add its group mates to Observer, ready to move
 			animationController.addMoveObserversByGroup((Item) e.getSource());
 		}
 		// De-select: if click on canvas
@@ -37,10 +42,10 @@ public class SelectObjectState extends State {
 			vm.clearGroupSelect();
 			animationController.removeMoveObservers();
 			areaStart = e.getPoint();
-//			canvas.repaint();
 		}
+		canvas.repaint();
 	}
-	
+
 	@Override
 	public void mouseDragged(MouseEvent e) {
 //		System.out.println("[Drag] selected source: "+e.getSource());
@@ -51,16 +56,17 @@ public class SelectObjectState extends State {
 			// change its & group mates' location on in ViewModel
 			// I edit update() method, but UI movies 2x faster..... WTF
 			// and vm's location changes itself...
+			setGroupAreas((Item) e.getSource());
 		}
 		else if (e.getSource() == canvas) {
 			// display selected area
 			areaEnd = e.getPoint();
 			groupPainter.setSelectedArea(areaStart, areaEnd);
-			canvas.repaint();
 			
 			// perform grouping
 			vm.selectItemsInArea(groupPainter);
 		}
+		canvas.repaint();
 	}
 	
 	@Override
@@ -75,10 +81,29 @@ public class SelectObjectState extends State {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() == canvas) {
-			groupPainter.clearSelectedArea();
+			groupPainter.clearSelectedArea(); // 取消選取框
+			groupPainter.clearSelectedGroups(); // 取消群組框
 			vm.clearGroupSelect();
 			canvas.repaint();
 		}
+	}
+	
+	private void setGroupAreas(Item selected) {
+		// clear the canvas first
+		groupPainter.clearSelectedGroups();
+		// get the group Ids of selected Item (屬於哪幾個群組)
+		ArrayList<Integer> groupIds = selected.getModelReference().getGroupIds();
+		if (groupIds == null || groupIds.isEmpty()) {
+			return;
+		}
+		// traverse each group with selected item, call GroupGraphic to calculate area of each group
+		groupIds.forEach(id -> {
+			ArrayList<Item> members = vm.getItemsByGroupId(id)
+					 .stream()
+					 .map(basicObject -> vm.mapItem(basicObject))
+					 .collect(Collectors.toCollection(ArrayList::new));
+			groupPainter.setSelectedGroups(members);
+		});
 	}
 	
 }

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import Model.BasicObject;
 import ViewModel.ViewModel;
 
+/** 透過 Observer Pattern 實作群組移動的動態效果，不處理靜態畫面喔! 要繪製群組框請找 GroupGraphic **/
 public class AnimationController {
 	
 	//create an object of Singleton 
