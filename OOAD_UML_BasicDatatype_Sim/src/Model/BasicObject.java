@@ -42,7 +42,8 @@ public class BasicObject extends Shape {
 	}
 	
 	public void removeFromGroup(int groudId) {
-		groupIds.remove(groudId);
+		int index = groupIds.indexOf(groudId);
+		groupIds.remove(index);
 	}
 
 //	public Port getPort(int portIndex) {

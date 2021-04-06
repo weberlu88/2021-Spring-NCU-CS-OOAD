@@ -118,7 +118,7 @@ public class GroupGraphic {
 				.max(Comparator.comparing(n -> n.getLocation().getY() + n.getHeight() ))
 				.orElseThrow(NoSuchElementException::new);
 		int maxY = item.getY() + item.getHeight();
-		System.out.println("min: "+minX+" "+minY+", max: "+maxX+" "+maxY);
+//		System.out.println("min: "+minX+" "+minY+", max: "+maxX+" "+maxY);
 		
 		groupList.add(new Group(minX, minY, (maxX - minX), (maxY - minY) ));
 	}

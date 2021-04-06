@@ -69,6 +69,13 @@ public class MenuBar extends JMenuBar {
 		    	break;
 		    	
 		    case UNGROUP:
+		    	int deletedGroupId = performUnGroup();
+		    	if (deletedGroupId >= 1) 
+					System.out.println("[UnGroup] Deleted groupId is: " + deletedGroupId);
+				else if (deletedGroupId == -1)
+					System.out.println("[UnGroup] Item doesn't have any group.");
+				else
+					System.out.println("[UnGroup] Please select an item.");
 		    	break;
 		    }
 
@@ -94,6 +101,21 @@ public class MenuBar extends JMenuBar {
 																	 .collect(Collectors.toCollection(ArrayList::new));
 		int success = vm.addGroup(objects);
 		return success;
+	}
+	
+	private int performUnGroup() {
+		// 幫 selected item 解除最外層的 group ，挑 groupId's tail 的群組，remove 整個群組。
+		BasicObject selected = vm.getSelected();
+		if (selected == null)
+			return -2;
+		ArrayList<Integer> groupIds = selected.getGroupIds();
+		if (groupIds == null || groupIds.isEmpty())
+			return -1;
+		else {
+			int lastGroupId = groupIds.get(groupIds.size() - 1); // array[-1] as target
+			vm.removeGroup(lastGroupId);
+			return lastGroupId;
+		}
 	}
 
 }

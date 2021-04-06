@@ -15,7 +15,7 @@ public class ViewModel {
 	private static ViewModel instance = new ViewModel();
 	/** 被選取的物件 reference **/
 	private BasicObject selected = null;
-	private ArrayList<Item> groupSelected = new ArrayList<Item>();
+	private ArrayList<Item> groupSelected = new ArrayList<Item>(); // 被多選的物件，未進行群組
 	/** store all items in viewModel **/
 	private ArrayList<BasicObject> items = new ArrayList<BasicObject>();
 	private HashMap< BasicObject, Item > viewReferenceMap = new HashMap< BasicObject, Item >();
