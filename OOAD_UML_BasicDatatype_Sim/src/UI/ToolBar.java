@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.UIManager;
 
+import ViewModel.CreateLineState;
 import ViewModel.CreateObjectState;
 import ViewModel.SelectItemState;
 import ViewModel.SelectObjectState;
@@ -89,17 +90,23 @@ public class ToolBar extends JToolBar {
 	    		// dynamic switch states (strategies)
 	    		System.out.println("clicked: " + e.getActionCommand());
 	    		switch ( State.valueOf(e.getActionCommand()) ) {
-	    		case SELECT:
+	    		case SELECT: // 選取
 	    			canvas.setState( new SelectObjectState()  );
 	    			vm.setStateAllItems( new SelectItemState() );
 	    			break;
-				case ASSOCIATE:
+				case ASSOCIATE: // 畫線3種
+					canvas.setState( new CreateLineState(State.ASSOCIATE) );
+					vm.setStateAllItems( new CreateLineState() );
 					break;
 				case COMPOSITE:
+					canvas.setState( new CreateLineState(State.COMPOSITE) );
+					vm.setStateAllItems( new CreateLineState() );
 					break;
 				case GENERAL:
+					canvas.setState( new CreateLineState(State.GENERAL) );
+					vm.setStateAllItems( new CreateLineState() );
 					break;
-				case CLASS:
+				case CLASS: // 建立2種Object
 					canvas.setState( new CreateObjectState(State.CLASS) );
 					vm.removeStateAllItems();
 					break;

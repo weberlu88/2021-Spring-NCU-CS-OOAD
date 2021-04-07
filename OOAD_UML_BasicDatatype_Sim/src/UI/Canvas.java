@@ -29,6 +29,7 @@ public class Canvas extends JLayeredPane {
 	private static Canvas instance = null;
 	private EventListener listener = null;
 	GroupGraphic groupPainter = GroupGraphic.getInstance();
+	LineGraphic linePainter = LineGraphic.getInstance();
 	private int nextDepth = Integer.MAX_VALUE; 
 
 	/** Build canvas with layered panel **/
@@ -56,6 +57,7 @@ public class Canvas extends JLayeredPane {
         // draw the selected area & selected item's groups
         groupPainter.drawSelectedArea(g);
         groupPainter.drawSelectedGroups(g);
+        linePainter.drawLines(g);
     }
 	
 	/** In Strategy pattern, the canvas's listener/algorithm can be changed at run time 

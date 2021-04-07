@@ -2,9 +2,11 @@ package ViewModel;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 
 import Model.BasicObject;
+import Model.Line;
 import Model.ShapeFactory;
 import UI.GroupGraphic;
 import UI.animation.Item;
@@ -22,6 +24,8 @@ public class ViewModel {
 	/** <group-id, items> **/
 	private HashMap< Integer, ArrayList<BasicObject> > groups = new HashMap<Integer, ArrayList<BasicObject> >(); 
 	private int nextGroupId = 1;
+	/** Lines **/
+	private ArrayList<Line> lines = new ArrayList<Line>();
 	private ShapeFactory factory = new ShapeFactory();
 
 	//make the constructor private so that this class cannot be instantiated
@@ -63,6 +67,21 @@ public class ViewModel {
 		items.forEach(i -> { 
 			viewReferenceMap.get(i).removeState();
 		});
+	}
+	
+	/** 尋找涵蓋傳入 location 的所有 item，最上層(depth最低)的排在最前面，return null if not found **/
+	public ArrayList<Item> findItemByLocation(Point location) {
+		ArrayList<Item> itemsInLocation = new ArrayList<Item>();
+		for (Item item : viewReferenceMap.values()) {
+			if (item.coverPoint(location))
+				itemsInLocation.add(item); // item cover the point -> push back in list
+		}
+		if (itemsInLocation.isEmpty())
+			return null;
+		else {
+			itemsInLocation.sort(Comparator.comparing(Item::getDepth));
+			return itemsInLocation;
+		}
 	}
 	
 	/*------- group related methods --------*/
@@ -141,5 +160,16 @@ public class ViewModel {
 
 	public ArrayList<Item> getGroupSelected() {
 		return groupSelected;
+	}
+	
+	/*-------line related methods --------*/
+	public ArrayList<Line> getAllLines() {
+		return lines;
+	}
+	
+	public Line addLine(Item src, int srcPort, Item dest, int destPort) {
+		Line newLine = factory.getLine(src, srcPort, dest, destPort);
+		lines.add(newLine);
+		return newLine;
 	}
 }

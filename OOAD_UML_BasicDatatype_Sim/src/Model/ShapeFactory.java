@@ -2,6 +2,8 @@ package Model;
 
 import java.awt.Point;
 
+import UI.animation.Item;
+
 public class ShapeFactory implements ShapeFactoryInterface {
 
 	/** ref: https://www.tutorialspoint.com/design_pattern/factory_pattern.htm **/
@@ -17,6 +19,23 @@ public class ShapeFactory implements ShapeFactoryInterface {
 		     return new UsecaseObject(location);
 		  }
 		return null;
+	}
+
+	@Override
+	public Line getLine(String lineType, Port start, Port end) {
+		// TODO Auto-generated method stub
+		// i don't care which line it is...
+		return null;
+	}
+	
+	@Override
+	public Line getLine(Port start, Port end) {
+		return new Line(start, end);
+	}
+
+	@Override
+	public Line getLine(Item src, int srcPort, Item dest, int destPort) {
+		return new Line(src, srcPort, dest, destPort);
 	}
 
 }

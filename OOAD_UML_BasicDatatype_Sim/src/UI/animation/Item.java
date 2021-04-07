@@ -76,6 +76,15 @@ public class Item extends JLayeredPane implements IObserver {
 		location.translate(offsetX, offsetY);
 		moveTo(location);
 	}
+	
+	/** Weather the point is inside the scope of Item or not. **/
+	public boolean coverPoint(Point point) {
+		if (point.getX() >= location.getX() && location.getY() >= location.getY()) // ¦ì¸m
+			if (point.getX() <= location.getX() + width) // ªø
+				if (point.getY() <= location.getY() + height) // ¼e
+					return true;
+		return false;
+	}
 
 	/** Core method of moving: Update location by translating location & reset bounds.
 	 * Makes both changes at View & ViewModel. **/
