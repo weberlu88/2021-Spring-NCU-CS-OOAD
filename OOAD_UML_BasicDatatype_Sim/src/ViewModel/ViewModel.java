@@ -170,10 +170,11 @@ public class ViewModel {
 		return lines;
 	}
 	
-	public Line addLine(Item src, int srcPort, Item dest, int destPort) {
+	public Line addLine(Item src, int srcPort, Item dest, int destPort, String lineType) {
 		List<Integer> ports = Arrays.asList(Port.ports);
 		if (ports.contains(srcPort) && ports.contains(destPort)) {
-			Line newLine = factory.getLine(src, srcPort, dest, destPort);
+			System.out.println(".....vm:"+lineType);
+			Line newLine = factory.getLine(src, srcPort, dest, destPort, lineType);
 			lines.add(newLine);
 			return newLine;
 		} else {

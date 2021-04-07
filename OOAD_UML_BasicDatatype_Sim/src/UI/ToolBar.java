@@ -95,16 +95,16 @@ public class ToolBar extends JToolBar {
 	    			vm.setStateAllItems( new SelectItemState() );
 	    			break;
 				case ASSOCIATE: // 畫線3種
-					canvas.setState( new CreateLineState(State.ASSOCIATE) );
-					vm.setStateAllItems( new CreateLineState() );
+					canvas.setState( new CreateLineState(State.ASSOCIATE.toString()) );
+					vm.setStateAllItems( new CreateLineState(State.ASSOCIATE.toString()) );
 					break;
 				case COMPOSITE:
-					canvas.setState( new CreateLineState(State.COMPOSITE) );
-					vm.setStateAllItems( new CreateLineState() );
+					canvas.setState( new CreateLineState(State.COMPOSITE.toString()) );
+					vm.setStateAllItems( new CreateLineState(State.COMPOSITE.toString()) );
 					break;
 				case GENERAL:
-					canvas.setState( new CreateLineState(State.GENERAL) );
-					vm.setStateAllItems( new CreateLineState() );
+					canvas.setState( new CreateLineState(State.GENERAL.toString()) );
+					vm.setStateAllItems( new CreateLineState(State.GENERAL.toString()) );
 					break;
 				case CLASS: // 建立2種Object
 					canvas.setState( new CreateObjectState(State.CLASS) );

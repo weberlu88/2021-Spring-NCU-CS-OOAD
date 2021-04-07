@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import UI.GroupGraphic;
 import UI.LineGraphic;
 import UI.animation.Item;
+import ViewModel.State;
+//import UI.ToolBar.State;
 
 public class CreateLineState extends State {
 	
@@ -16,8 +18,8 @@ public class CreateLineState extends State {
 	GroupGraphic groupPainter = GroupGraphic.getInstance();
 	LineGraphic linePainter = LineGraphic.getInstance();
 	
-	public CreateLineState(UI.ToolBar.State lineType) {
-		this.lineType = lineType.toString();
+	public CreateLineState(String lineType) {
+		this.lineType = lineType;
 		// clear selected area
 		groupPainter.clearSelectedArea();
 		canvas.repaint();
@@ -84,7 +86,7 @@ public class CreateLineState extends State {
 			destPortNumber = dest.atWhichPort( pointRelateToDest );
 			System.out.println("[Release] port"+destPortNumber+", "+dest);
 			// store & draw the line
-			vm.addLine(scr, scrPortNumber, dest, destPortNumber);
+			vm.addLine(scr, scrPortNumber, dest, destPortNumber, lineType);
 			canvas.repaint();
 		}
 	}

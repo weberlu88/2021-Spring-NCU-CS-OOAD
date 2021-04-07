@@ -37,5 +37,12 @@ public class ShapeFactory implements ShapeFactoryInterface {
 	public Line getLine(Item src, int srcPort, Item dest, int destPort) {
 		return new Line(src, srcPort, dest, destPort);
 	}
+	
+	public Line getLine(Item src, int srcPort, Item dest, int destPort, String state) {
+		System.out.println(".....factory:"+state);
+		return new Line(src, srcPort, dest, destPort, state);
+	}
+	
+	
 
 }
