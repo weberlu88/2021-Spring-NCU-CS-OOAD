@@ -3,6 +3,7 @@ package UI.animation;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Polygon;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -18,6 +19,7 @@ import Model.UsecaseObject;
 import UI.Canvas;
 import ViewModel.State;
 import ViewModel.ViewModel;
+import Model.Port;
 
 @SuppressWarnings("serial")
 public class Item extends JLayeredPane implements IObserver {
@@ -84,6 +86,29 @@ public class Item extends JLayeredPane implements IObserver {
 				if (point.getY() <= location.getY() + height) // 寬
 					return true;
 		return false;
+	}
+	
+	/** determine the point location on which port, -1 as not inside, 參考 haVancy 的算法 **/
+	public int atWhichPort(Point point) {
+		// get 4 頂點 & 中心點
+//		int x = (int) location.getX(), y = (int) location.getY(); //右上 左上 左下 右下
+		Point[] apexs = {new Point(width, 0), new Point(0, 0), new Point(0, height), new Point(width, height) };
+		Point center = new Point(width/2, height/2);
+		// 將 item 依對角線畫成 4 份三角形
+		// 判斷 param 的點在哪個三角形中，回傳該 port number
+		// N (0,1,center), W (1,2,center), S (2,3,center), E (3,0,center)
+		for (int i = 0; i < apexs.length; i++) {
+			Polygon t = new Polygon();
+			int secondIndex = ((i + 1) % 4);
+			t.addPoint(apexs[i].x, apexs[i].y);
+			t.addPoint(apexs[secondIndex].x, apexs[secondIndex].y);
+			t.addPoint(center.x, center.y);
+			
+			if (t.contains(point)) {
+				return Port.ports[i];
+			}
+		}
+		return -1;
 	}
 
 	/** Core method of moving: Update location by translating location & reset bounds.

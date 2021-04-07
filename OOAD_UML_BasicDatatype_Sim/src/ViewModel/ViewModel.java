@@ -2,11 +2,14 @@ package ViewModel;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 
 import Model.BasicObject;
 import Model.Line;
+import Model.Port;
 import Model.ShapeFactory;
 import UI.GroupGraphic;
 import UI.animation.Item;
@@ -168,8 +171,14 @@ public class ViewModel {
 	}
 	
 	public Line addLine(Item src, int srcPort, Item dest, int destPort) {
-		Line newLine = factory.getLine(src, srcPort, dest, destPort);
-		lines.add(newLine);
-		return newLine;
+		List<Integer> ports = Arrays.asList(Port.ports);
+		if (ports.contains(srcPort) && ports.contains(destPort)) {
+			Line newLine = factory.getLine(src, srcPort, dest, destPort);
+			lines.add(newLine);
+			return newLine;
+		} else {
+			System.out.println("vm::addLine() invalid port number"+srcPort+", "+destPort);
+			return null;
+		}
 	}
 }

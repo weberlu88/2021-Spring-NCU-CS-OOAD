@@ -4,12 +4,12 @@ import java.awt.Point;
 
 import UI.animation.Item;
 
-class Port {
+public class Port {
 	public static final int N = 0;
 	public static final int W = 1;
 	public static final int S = 2;
 	public static final int E = 3;
-	public static final int[] ports = new int[] {N, W, S, E};
+	public static final Integer[] ports = new Integer[] {N, W, S, E};
 	private int port;
 	private Item item;
 	
