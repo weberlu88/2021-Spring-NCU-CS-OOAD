@@ -58,6 +58,7 @@ public class Canvas extends JLayeredPane {
         groupPainter.drawSelectedArea(g);
         groupPainter.drawSelectedGroups(g);
         linePainter.drawLines(g);
+        linePainter.drawLinkingLine(g);
     }
 	
 	/** In Strategy pattern, the canvas's listener/algorithm can be changed at run time 
