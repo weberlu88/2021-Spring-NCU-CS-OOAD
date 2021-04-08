@@ -30,7 +30,7 @@ public class Canvas extends JLayeredPane {
 	private EventListener listener = null;
 	GroupGraphic groupPainter = GroupGraphic.getInstance();
 	LineGraphic linePainter = LineGraphic.getInstance();
-	private int nextDepth = Integer.MAX_VALUE; 
+	private int nextDepth = 0; 
 
 	/** Build canvas with layered panel **/
 	private Canvas() {
@@ -73,7 +73,7 @@ public class Canvas extends JLayeredPane {
 	}
 	
 	public int getNextDepth() {
-		return nextDepth--; // the bigger the depth is, the upper layer it locates.
+		return nextDepth++; // the bigger the depth is, the upper layer it locates.
 	}
 
 	public void addObject() {

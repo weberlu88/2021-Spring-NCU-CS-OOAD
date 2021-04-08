@@ -49,6 +49,7 @@ public class Item extends JLayeredPane implements IObserver {
 		width = icon.getIconWidth();
 		height = icon.getIconHeight();
 		setPreferredSize(new Dimension(icon.getIconWidth(), icon.getIconHeight()));
+		label.setOpaque(true);
 		label.setBounds(0, 0, icon.getIconWidth(), icon.getIconHeight());
 		this.text.setBounds(0, 0, icon.getIconWidth(), icon.getIconHeight());
 		add(label, 1);
