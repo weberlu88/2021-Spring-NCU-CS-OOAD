@@ -121,6 +121,10 @@ public class ViewModel {
 		removeSelect();
 		selected = item.getModelReference(); // record selected object in vm
 		item.displaySelected();
+		if (!item.getModelReference().getGroupIds().isEmpty())
+			for(int idx : item.getModelReference().getGroupIds())
+				for(BasicObject i : getItemsByGroupId(idx))
+					mapItem(i).displaySelected();
 	}
 	
 	public void removeSelect() {
@@ -128,6 +132,11 @@ public class ViewModel {
 		if (selected != null) {
 			mapItem(selected).displayDeselected();
 			selected = null;
+			
+			if (!selected.getGroupIds().isEmpty())
+				for(int idx : selected.getGroupIds())
+					for(BasicObject i : getItemsByGroupId(idx))
+						mapItem(i).displayDeselected();
 		}
 	}
 	
