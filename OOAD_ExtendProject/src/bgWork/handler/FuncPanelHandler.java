@@ -15,6 +15,7 @@ import bgWork.InitProcess;
 import mod.instance.AssociationLine;
 import mod.instance.BasicClass;
 import mod.instance.CompositionLine;
+import mod.instance.DependencyLine;
 import mod.instance.GeneralizationLine;
 import mod.instance.SelectComp;
 import mod.instance.UseCase;
@@ -91,6 +92,7 @@ public class FuncPanelHandler extends PanelHandler
 	public void ActionPerformed(MouseEvent e)
 	{
 		setCurrentBtn(btnlist.indexOf(e.getSource()));
+		printCurrentFunction();
 	}
 
 	public void setCurrentBtn(int index)
@@ -107,6 +109,35 @@ public class FuncPanelHandler extends PanelHandler
 	public int getCurrentFuncIndex()
 	{
 		return currIndex;
+	}
+	
+	public void printCurrentFunction()
+	{
+		System.out.print("func"+getCurrentFuncIndex()+", ");
+		switch (getCurrentFuncIndex())
+		{
+			case 0:
+				System.out.println("Select");
+				break;
+			case 1:
+				System.out.println("AssociationLine");
+				break;
+			case 2:
+				System.out.println("GeneralizationLine");
+				break;
+			case 3:
+				System.out.println("CompositionLine");
+				break;
+			case 4:
+				System.out.println("BasicClass");
+				break;
+			case 5:
+				System.out.println("UseCase");
+				break;
+			case 6:
+				System.out.println("DependencyLine");
+				break;
+		}
 	}
 
 	ImageIcon getIcon(int index)
@@ -125,6 +156,8 @@ public class FuncPanelHandler extends PanelHandler
 				return new ImageIcon("icon/class.jpg");
 			case 5:
 				return new ImageIcon("icon/use_case.jpg");
+			case 6:
+				return new ImageIcon("icon/dependency_line.png");
 			default:
 				return null;
 		}
@@ -146,6 +179,8 @@ public class FuncPanelHandler extends PanelHandler
 				return new BasicClass(core.getCanvasPanelHandler());
 			case 5:
 				return new UseCase(core.getCanvasPanelHandler());
+			case 6:
+				return new DependencyLine(core.getCanvasPanelHandler());
 			default:
 				return null;
 		}

@@ -52,7 +52,7 @@ public class DependencyLine extends JPanel
 				tp.y - this.getLocation().y);
 		g.setColor(Color.BLACK);
 		// draw µê½u
-		Graphics2D g2d = (Graphics2D) g;
+		Graphics2D g2d = (Graphics2D) g.create();
 		float[] dash = { 2f, 0f, 2f };
 		BasicStroke bs1 = new BasicStroke(1, 
 		        BasicStroke.CAP_BUTT, 
@@ -62,6 +62,8 @@ public class DependencyLine extends JPanel
 		        2f);
 		g2d.setStroke(bs1);
 		g2d.drawLine(fpPrime.x, fpPrime.y, tpPrime.x, tpPrime.y);
+//		g.drawLine(fpPrime.x, fpPrime.y, tpPrime.x, tpPrime.y);
+		// draw ¤T¨¤
 		paintArrow(g, tpPrime);
 		if (isSelect == true)
 		{
@@ -87,6 +89,27 @@ public class DependencyLine extends JPanel
 		{point.x, point.x - arrowSize, point.x, point.x + arrowSize};
 		int y[] =
 		{point.y + arrowSize, point.y, point.y - arrowSize, point.y};
+		switch (toSide)
+		{
+			case 0:
+				x = removeAt(x, 0);
+				y = removeAt(y, 0);
+				break;
+			case 1:
+				x = removeAt(x, 1);
+				y = removeAt(y, 1);
+				break;
+			case 2:
+				x = removeAt(x, 3);
+				y = removeAt(y, 3);
+				break;
+			case 3:
+				x = removeAt(x, 2);
+				y = removeAt(y, 2);
+				break;
+			default:
+				break;
+		}
 		Polygon polygon = new Polygon(x, y, x.length);
 		g.setColor(Color.WHITE);
 		g.fillPolygon(polygon);
@@ -152,6 +175,23 @@ public class DependencyLine extends JPanel
 		{
 			temp = null;
 			System.err.println("getConnectPoint fail:" + side);
+		}
+		return temp;
+	}
+	
+	int[] removeAt(int arr[], int index)
+	{
+		int temp[] = new int[arr.length - 1];
+		for (int i = 0; i < temp.length; i ++)
+		{
+			if (i < index)
+			{
+				temp[i] = arr[i];
+			}
+			else if (i >= index)
+			{
+				temp[i] = arr[i + 1];
+			}
 		}
 		return temp;
 	}

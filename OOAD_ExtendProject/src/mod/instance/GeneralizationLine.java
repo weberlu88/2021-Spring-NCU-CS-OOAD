@@ -51,18 +51,7 @@ public class GeneralizationLine extends JPanel
 		tpPrime = new Point(tp.x - this.getLocation().x,
 				tp.y - this.getLocation().y);
 		g.setColor(Color.BLACK);
-		// draw µê½u
-				Graphics2D g2d = (Graphics2D) g.create();;
-				float[] dash = { 2f, 0f, 2f };
-				BasicStroke bs1 = new BasicStroke(1, 
-				        BasicStroke.CAP_BUTT, 
-				        BasicStroke.JOIN_ROUND, 
-				        1.0f, 
-				        dash,
-				        2f);
-				g2d.setStroke(bs1);
-				g2d.drawLine(fpPrime.x, fpPrime.y, tpPrime.x, tpPrime.y);
-//		g.drawLine(fpPrime.x, fpPrime.y, tpPrime.x, tpPrime.y);
+		g.drawLine(fpPrime.x, fpPrime.y, tpPrime.x, tpPrime.y);
 		paintArrow(g, tpPrime);
 		if (isSelect == true)
 		{
@@ -129,7 +118,6 @@ public class GeneralizationLine extends JPanel
 		renewConnect();
 		System.out.println("from side " + fromSide);
 		System.out.println("to side " + toSide);
-		;
 	}
 
 	void renewConnect()
