@@ -7,11 +7,11 @@ public class AreaDefine
 {
 	int					xMask		= 0x01;
 	int					yMask		= 0x02;
-	public final int	OUT_SIDE	= -1;
-	public final int	TOP			= 3;
-	public final int	RIGHT		= 2;
-	public final int	LEFT		= 1;
-	public final int	BOTTOM		= 0;
+	public static final int	OUT_SIDE	= -1;
+	public static final int	TOP			= 3;
+	public static final int	RIGHT		= 2;
+	public static final int	LEFT		= 1;
+	public static final int	BOTTOM		= 0;
 
 	public int getArea(Point rectLocat, Dimension rectSize, Point click)
 	{

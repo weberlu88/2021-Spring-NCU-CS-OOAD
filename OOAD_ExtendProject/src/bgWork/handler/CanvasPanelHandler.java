@@ -7,14 +7,18 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.util.Vector;
+import java.util.logging.Logger;
 
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
+import Define.AreaDefine;
 import Listener.CPHActionListener;
 import Pack.DragPack;
 import Pack.SendText;
 import bgWork.InitProcess;
+import mod.IClassPainter;
+import mod.ILinePainter;
 import mod.instance.AssociationLine;
 import mod.instance.BasicClass;
 import mod.instance.CompositionLine;
@@ -28,6 +32,8 @@ public class CanvasPanelHandler extends PanelHandler
 	Vector <JPanel>	members		= new Vector <>();
 	Vector <JPanel>	selectComp	= new Vector <>();
 	int				boundShift	= 10;
+	private Vector<JPanel> lines = new Vector<JPanel>();
+	static final Logger logger = Logger.getLogger(CanvasPanelHandler.class.getName());
 
 	public CanvasPanelHandler(JPanel Container, InitProcess process)
 	{
@@ -106,6 +112,35 @@ public class CanvasPanelHandler extends PanelHandler
 		}
 		contextPanel.updateUI();
 	}
+	
+	private JPanel getLineByObject(JPanel basicObject, int port) {
+		// map the ports (因為我寫的跟作者的port號不同)
+		switch(port) {
+		case AreaDefine.TOP: // N
+			port = IClassPainter.N;
+			break;
+		case AreaDefine.LEFT: // W
+			port = IClassPainter.W;
+			break;
+		case AreaDefine.BOTTOM: // S
+			port = IClassPainter.S;
+			break;
+		case AreaDefine.RIGHT: // E
+			port = IClassPainter.E;
+			break;
+		}
+		
+		// examine reference & port
+		ILinePainter iline;
+		for (JPanel line : lines) {
+			logger.info("check line: " + line);
+			iline = (ILinePainter) line;
+			if ((iline.getFrom() == basicObject && iline.getFromSide() == port) || 
+					(iline.getTo() == basicObject && iline.getToSide() == port))
+				return line;
+		}
+		return null;
+	}
 
 	void selectByClick(MouseEvent e)
 	{
@@ -119,16 +154,38 @@ public class CanvasPanelHandler extends PanelHandler
 				switch (core.isFuncComponent(members.elementAt(i)))
 				{
 					case 0:
-						((BasicClass) members.elementAt(i)).setSelect(true);
+						// class
+						BasicClass object = (BasicClass) members.elementAt(i);
+						object.setSelect(true);
 						selectComp.add(members.elementAt(i));
 						isSelect = true;
+						// click on which port
+						Point onItem = new Point(e.getPoint().x - object.getX() , e.getPoint().y - object.getY());
+						int port = object.inWhichPort(onItem);
+						logger.info("click on item location: "+onItem);
+						logger.info("click on port: "+port);
+						// find connected line on this port, modify the paint() behavior to highligth it 
+						if ( 0 <= port && port <= 3) {
+							// get the line mark as selected (highligth)
+							ILinePainter iline = (ILinePainter) getLineByObject(object, port);
+							if (iline != null) {
+								iline.setSelect(true);
+								repaintComp();
+								logger.info("iline is found");
+							}
+							else {
+								logger.info("iline is null: no line connected on port");
+							}
+						}
 						break;
 					case 1:
+						// use case
 						((UseCase) members.elementAt(i)).setSelect(true);
 						selectComp.add(members.elementAt(i));
 						isSelect = true;
 						break;
 					case 5:
+						// group
 						Point p = e.getPoint();
 						p.x -= members.elementAt(i).getLocation().x;
 						p.y -= members.elementAt(i).getLocation().y;
@@ -401,6 +458,7 @@ public class CanvasPanelHandler extends PanelHandler
 					default:
 						break;
 				}
+				lines.add(funcObj);
 				contextPanel.add(funcObj, 0);
 				break;
 		}

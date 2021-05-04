@@ -43,6 +43,12 @@ public class DependencyLine extends JPanel
 	@Override
 	public void paintComponent(Graphics g)
 	{
+		// if selected change g's color
+		if (isSelect)
+			g.setColor(Color.blue);
+		else
+			g.setColor(Color.black);
+		
 		Point fpPrime;
 		Point tpPrime;
 		renewConnect();
@@ -50,7 +56,6 @@ public class DependencyLine extends JPanel
 				fp.y - this.getLocation().y);
 		tpPrime = new Point(tp.x - this.getLocation().x,
 				tp.y - this.getLocation().y);
-		g.setColor(Color.BLACK);
 		// draw µê½u
 		Graphics2D g2d = (Graphics2D) g.create();
 		float[] dash = { 2f, 0f, 2f };
@@ -151,22 +156,22 @@ public class DependencyLine extends JPanel
 	{
 		Point temp = new Point(0, 0);
 		Point jpLocation = cph.getAbsLocation(jp);
-		if (side == new AreaDefine().TOP)
+		if (side == AreaDefine.TOP)
 		{
 			temp.x = (int) (jpLocation.x + jp.getSize().getWidth() / 2);
 			temp.y = jpLocation.y;
 		}
-		else if (side == new AreaDefine().RIGHT)
+		else if (side == AreaDefine.RIGHT)
 		{
 			temp.x = (int) (jpLocation.x + jp.getSize().getWidth());
 			temp.y = (int) (jpLocation.y + jp.getSize().getHeight() / 2);
 		}
-		else if (side == new AreaDefine().LEFT)
+		else if (side == AreaDefine.LEFT)
 		{
 			temp.x = jpLocation.x;
 			temp.y = (int) (jpLocation.y + jp.getSize().getHeight() / 2);
 		}
-		else if (side == new AreaDefine().BOTTOM)
+		else if (side == AreaDefine.BOTTOM)
 		{
 			temp.x = (int) (jpLocation.x + jp.getSize().getWidth() / 2);
 			temp.y = (int) (jpLocation.y + jp.getSize().getHeight());
@@ -199,7 +204,7 @@ public class DependencyLine extends JPanel
 	@Override
 	public void paintSelect(Graphics gra)
 	{
-		gra.setColor(Color.BLACK);
+		gra.setColor(Color.BLUE);
 		gra.fillRect(fp.x, fp.y, selectBoxSize, selectBoxSize);
 		gra.fillRect(tp.x, tp.y, selectBoxSize, selectBoxSize);
 	}
@@ -212,5 +217,21 @@ public class DependencyLine extends JPanel
 	public void setSelect(boolean isSelect)
 	{
 		this.isSelect = isSelect;
+	}
+
+	public JPanel getFrom() {
+		return from;
+	}
+
+	public int getFromSide() {
+		return fromSide;
+	}
+
+	public JPanel getTo() {
+		return to;
+	}
+
+	public int getToSide() {
+		return toSide;
 	}
 }

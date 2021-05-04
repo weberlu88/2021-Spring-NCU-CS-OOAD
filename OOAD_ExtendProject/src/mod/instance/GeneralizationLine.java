@@ -43,6 +43,12 @@ public class GeneralizationLine extends JPanel
 	@Override
 	public void paintComponent(Graphics g)
 	{
+		// if selected change g's color
+		if (isSelect)
+			g.setColor(Color.blue);
+		else
+			g.setColor(Color.black);
+		
 		Point fpPrime;
 		Point tpPrime;
 		renewConnect();
@@ -50,7 +56,6 @@ public class GeneralizationLine extends JPanel
 				fp.y - this.getLocation().y);
 		tpPrime = new Point(tp.x - this.getLocation().x,
 				tp.y - this.getLocation().y);
-		g.setColor(Color.BLACK);
 		g.drawLine(fpPrime.x, fpPrime.y, tpPrime.x, tpPrime.y);
 		paintArrow(g, tpPrime);
 		if (isSelect == true)
@@ -187,7 +192,7 @@ public class GeneralizationLine extends JPanel
 	@Override
 	public void paintSelect(Graphics gra)
 	{
-		gra.setColor(Color.BLACK);
+		gra.setColor(Color.BLUE);
 		gra.fillRect(fp.x, fp.y, selectBoxSize, selectBoxSize);
 		gra.fillRect(tp.x, tp.y, selectBoxSize, selectBoxSize);
 	}
@@ -200,5 +205,21 @@ public class GeneralizationLine extends JPanel
 	public void setSelect(boolean isSelect)
 	{
 		this.isSelect = isSelect;
+	}
+	
+	public JPanel getFrom() {
+		return from;
+	}
+
+	public int getFromSide() {
+		return fromSide;
+	}
+
+	public JPanel getTo() {
+		return to;
+	}
+
+	public int getToSide() {
+		return toSide;
 	}
 }

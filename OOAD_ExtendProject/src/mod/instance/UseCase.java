@@ -3,6 +3,8 @@ package mod.instance;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Polygon;
 import java.util.Vector;
 
 import javax.swing.JPanel;
@@ -92,6 +94,7 @@ public class UseCase extends JPanel implements IFuncComponent, IClassPainter
 	@Override
 	public void paintSelect(Graphics gra)
 	{
+		// 顯示port
 		gra.setColor(Color.BLACK);
 		gra.fillRect(this.getWidth() / 2 - selectBoxSize, 0, selectBoxSize * 2,
 				selectBoxSize);
@@ -103,5 +106,30 @@ public class UseCase extends JPanel implements IFuncComponent, IClassPainter
 		gra.fillRect(this.getWidth() - selectBoxSize,
 				this.getHeight() / 2 - selectBoxSize, selectBoxSize,
 				selectBoxSize * 2);
+	}
+
+	@Override
+	/** determine the point location on which port, -1 as not inside, 參考 haVancy 的算法 **/
+	public int inWhichPort(Point point) {
+		// get 4 頂點 & 中心點
+		int width = this.getWidth();
+		int height = this.getHeight();
+		Point[] apexs = {new Point(width, 0), new Point(0, 0), new Point(0, height), new Point(width, height) };
+		Point center = new Point(width/2, height/2);
+		// 將 item 依對角線畫成 4 份三角形
+		// 判斷 param 的點在哪個三角形中，回傳該 port number
+		// N (0,1,center), W (1,2,center), S (2,3,center), E (3,0,center)
+		for (int i = 0; i < apexs.length; i++) {
+			Polygon t = new Polygon();
+			int secondIndex = ((i + 1) % 4);
+			t.addPoint(apexs[i].x, apexs[i].y);
+			t.addPoint(apexs[secondIndex].x, apexs[secondIndex].y);
+			t.addPoint(center.x, center.y);
+			
+			if (t.contains(point)) {
+				return ports[i];
+			}
+		}
+		return -1;
 	}
 }
