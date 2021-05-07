@@ -141,9 +141,17 @@ public class CanvasPanelHandler extends PanelHandler
 		}
 		return null;
 	}
+	
+	private void deHighLightLine() {
+		for (JPanel line : lines) {
+			((ILinePainter) line).setSelect(false);
+		}
+		repaintComp();
+	}
 
 	void selectByClick(MouseEvent e)
 	{
+		deHighLightLine(); // 一開始就先取消high light
 		boolean isSelect = false;
 		selectComp = new Vector <>();
 		for (int i = 0; i < members.size(); i ++)
@@ -153,7 +161,7 @@ public class CanvasPanelHandler extends PanelHandler
 			{
 				switch (core.isFuncComponent(members.elementAt(i)))
 				{
-					case 0:
+					case 0: {
 						// class
 						BasicClass object = (BasicClass) members.elementAt(i);
 						object.setSelect(true);
@@ -178,12 +186,33 @@ public class CanvasPanelHandler extends PanelHandler
 							}
 						}
 						break;
-					case 1:
+					}
+					case 1: {
 						// use case
-						((UseCase) members.elementAt(i)).setSelect(true);
+						UseCase object = (UseCase) members.elementAt(i);
+						object.setSelect(true);
 						selectComp.add(members.elementAt(i));
 						isSelect = true;
+						// click on which port
+						Point onItem = new Point(e.getPoint().x - object.getX() , e.getPoint().y - object.getY());
+						int port = object.inWhichPort(onItem);
+						logger.info("click on item location: "+onItem);
+						logger.info("click on port: "+port);
+						// find connected line on this port, modify the paint() behavior to highligth it 
+						if ( 0 <= port && port <= 3) {
+							// get the line mark as selected (highligth)
+							ILinePainter iline = (ILinePainter) getLineByObject(object, port);
+							if (iline != null) {
+								iline.setSelect(true);
+								repaintComp();
+								logger.info("iline is found");
+							}
+							else {
+								logger.info("iline is null: no line connected on port");
+							}
+						}
 						break;
+					}
 					case 5:
 						// group
 						Point p = e.getPoint();
