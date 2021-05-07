@@ -116,17 +116,17 @@ public class CanvasPanelHandler extends PanelHandler
 	private JPanel getLineByObject(JPanel basicObject, int port) {
 		// map the ports (因為我寫的跟作者的port號不同)
 		switch(port) {
-		case AreaDefine.TOP: // N
-			port = IClassPainter.N;
+		case IClassPainter.N: // N
+			port = AreaDefine.TOP;
 			break;
-		case AreaDefine.LEFT: // W
-			port = IClassPainter.W;
+		case IClassPainter.W: // W
+			port = AreaDefine.LEFT;
 			break;
-		case AreaDefine.BOTTOM: // S
-			port = IClassPainter.S;
+		case IClassPainter.S: // S
+			port = AreaDefine.BOTTOM;
 			break;
-		case AreaDefine.RIGHT: // E
-			port = IClassPainter.E;
+		case IClassPainter.E: // E
+			port = AreaDefine.RIGHT;
 			break;
 		}
 		
