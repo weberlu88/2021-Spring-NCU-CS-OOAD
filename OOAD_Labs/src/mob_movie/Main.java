@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /** 電影有分三種類別，有不同的計價、租時: 新片、舊片、兒童片。以strategy pattern表達。 **/
 class Category {
@@ -194,28 +195,78 @@ class Rental {
 	}
 }
 
+/** Data Access Object Pattern or DAO pattern **/
+class RentalDao {
+	
+	//list is working as a database
+	private static List<Rental> rents = new ArrayList<Rental>();
+	
+	public List<Rental> findAll() {
+		return rents;
+	}
+	
+	public List<Rental> findByName(String name) {
+		return rents.stream().filter(r -> r.getCustomer().getName() == name).collect(Collectors.toList());
+    }
+	
+	public List<Rental> findByCustomerName(Customer customer) {
+		return rents.stream().filter(r -> r.getCustomer().equals(customer)).collect(Collectors.toList());
+    }
+	
+	public void insertRental(Rental... rentals) { // zero or more
+		for(Rental rental : rentals){
+			rents.add(rental);
+	    }
+	} 
+}
+
+/** 列印報表的helper class **/
+class ReportTool {
+	public static void printReport(List<Rental> rentals) {
+		int totalPrice = 0; 
+		double totalPoint = 0;
+		for(Rental rental : rentals){
+			System.out.println(rental.toString());
+			totalPrice += rental.getPrice();
+			totalPoint += rental.getPoint();
+	    }
+		System.out.println("消費總金額是: $"+totalPrice+" 累積點數為: "+totalPoint);
+	}
+}
+
 public class Main {
 
 	public static void main(String[] args) {
 
+		// 有2個客戶 偷懶存在main裡
 		Customer april = new Customer("April");
 		Customer joe = new Customer("Joe");
 		
+		// 有3個電影 偷懶存在main裡
 		Movie 神力女超人 = new Movie("神力女超人", new OldFilm()); // old
 		Movie 正義聯盟 = new Movie("正義聯盟", new NewFilm()); // new
 		Movie 雷神索爾 = new Movie("雷神索爾", new NewFilm()); // new
 		
-		List<Rental> rents = new ArrayList<Rental>();
-		rents.add(new Rental(april, 神力女超人, 3));
-		rents.add(new Rental(joe, 神力女超人, 2));
-		rents.add(new Rental(april, 正義聯盟, 5));
-		rents.add(new Rental(joe, 雷神索爾, 1));
+//		List<Rental> rents = new ArrayList<Rental>();
+//		rents.add(new Rental(april, 神力女超人, 3));
+//		rents.add(new Rental(joe, 神力女超人, 2));
+//		rents.add(new Rental(april, 正義聯盟, 5));
+//		rents.add(new Rental(joe, 雷神索爾, 1));
 		
-		for (Rental r: rents) {
-			System.out.println(r.toString());
-		}
+//		for (Rental r: rents) {
+//			System.out.println(r.toString());
+//		}
+		
+		// 消費紀錄存在 RentalDao
+		RentalDao rentalDao = new RentalDao();
+		rentalDao.insertRental(new Rental(april, 神力女超人, 3));
+		rentalDao.insertRental(new Rental(joe, 神力女超人, 2));
+		rentalDao.insertRental(new Rental(april, 正義聯盟, 5));
+		rentalDao.insertRental(new Rental(joe, 雷神索爾, 1));
 		
 		// 印報表
+		ReportTool.printReport(rentalDao.findByName("April"));
+		ReportTool.printReport(rentalDao.findByName("Joe"));
 
 	}
 
