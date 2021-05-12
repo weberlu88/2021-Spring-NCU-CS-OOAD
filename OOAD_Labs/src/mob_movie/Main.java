@@ -198,7 +198,7 @@ class Rental {
 /** Data Access Object Pattern or DAO pattern **/
 class RentalDao {
 	
-	//list is working as a database
+	//list is working as a database table
 	private static List<Rental> rents = new ArrayList<Rental>();
 	
 	public List<Rental> findAll() {
@@ -209,7 +209,7 @@ class RentalDao {
 		return rents.stream().filter(r -> r.getCustomer().getName() == name).collect(Collectors.toList());
     }
 	
-	public List<Rental> findByCustomerName(Customer customer) {
+	public List<Rental> findByCustomer(Customer customer) {
 		return rents.stream().filter(r -> r.getCustomer().equals(customer)).collect(Collectors.toList());
     }
 	
@@ -222,15 +222,16 @@ class RentalDao {
 
 /** 列印報表的helper class **/
 class ReportTool {
+	// class method
 	public static void printReport(List<Rental> rentals) {
 		int totalPrice = 0; 
 		double totalPoint = 0;
 		for(Rental rental : rentals){
-			System.out.println(rental.toString());
+			System.out.println(rental.toString()); // print 單筆rental資料
 			totalPrice += rental.getPrice();
 			totalPoint += rental.getPoint();
 	    }
-		System.out.println("消費總金額是: $"+totalPrice+" 累積點數為: "+totalPoint);
+		System.out.println("消費總金額是: $"+totalPrice+" 累積點數為: "+totalPoint); // print 總額
 	}
 }
 
@@ -266,7 +267,7 @@ public class Main {
 		
 		// 印報表
 		ReportTool.printReport(rentalDao.findByName("April"));
-		ReportTool.printReport(rentalDao.findByName("Joe"));
+		ReportTool.printReport(rentalDao.findByCustomer(joe));
 
 	}
 
