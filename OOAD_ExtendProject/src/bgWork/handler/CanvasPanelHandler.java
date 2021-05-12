@@ -6,6 +6,8 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Vector;
 import java.util.logging.Logger;
 
@@ -113,7 +115,7 @@ public class CanvasPanelHandler extends PanelHandler
 		contextPanel.updateUI();
 	}
 	
-	private JPanel getLineByObject(JPanel basicObject, int port) {
+	private ILinePainter[] getLineByObject(JPanel basicObject, int port) {
 		// map the ports (因為我寫的跟作者的port號不同)
 		switch(port) {
 		case IClassPainter.N: // N
@@ -132,14 +134,18 @@ public class CanvasPanelHandler extends PanelHandler
 		
 		// examine reference & port
 		ILinePainter iline;
+		List<JPanel> results = new ArrayList<JPanel>();
 		for (JPanel line : lines) {
 			logger.info("check line: " + line);
 			iline = (ILinePainter) line;
 			if ((iline.getFrom() == basicObject && iline.getFromSide() == port) || 
 					(iline.getTo() == basicObject && iline.getToSide() == port))
-				return line;
+				results.add(line);
 		}
-		return null;
+		ILinePainter[] resultArray = results.stream().toArray(ILinePainter[]::new);
+//		JPanel[] resultArray = new JPanel[results.size()];
+//		resultArray = (JPanel[]) results.toArray();
+		return  resultArray;
 	}
 	
 	private void deHighLightLine() {
@@ -175,9 +181,10 @@ public class CanvasPanelHandler extends PanelHandler
 						// find connected line on this port, modify the paint() behavior to highligth it 
 						if ( 0 <= port && port <= 3) {
 							// get the line mark as selected (highligth)
-							ILinePainter iline = (ILinePainter) getLineByObject(object, port);
-							if (iline != null) {
-								iline.setSelect(true);
+							ILinePainter[] ilines = getLineByObject(object, port);
+							if (ilines != null && ilines.length > 0) {
+								for (ILinePainter x : ilines)
+									x.setSelect(true);
 								repaintComp();
 								logger.info("iline is found");
 							}
@@ -201,9 +208,10 @@ public class CanvasPanelHandler extends PanelHandler
 						// find connected line on this port, modify the paint() behavior to highligth it 
 						if ( 0 <= port && port <= 3) {
 							// get the line mark as selected (highligth)
-							ILinePainter iline = (ILinePainter) getLineByObject(object, port);
-							if (iline != null) {
-								iline.setSelect(true);
+							ILinePainter[] ilines = getLineByObject(object, port);
+							if (ilines != null && ilines.length > 0) {
+								for (ILinePainter x : ilines)
+									x.setSelect(true);
 								repaintComp();
 								logger.info("iline is found");
 							}
